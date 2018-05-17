@@ -56,14 +56,19 @@ npm manifest:
     },
     "dependencies": {
       "egg": "^2.6.1",
+      "egg-jwt": "^3.0.0",
       "egg-scripts": "^2.6.0",
       "egg-sequelize": "^3.1.4",
-      "mysql2": "^1.5.3"
+      "md5": "^2.2.1",
+      "mysql2": "^1.5.3",
+      "validator": "9.4.1"
     },
     "devDependencies": {
+      "@types/md5": "^2.1.32",
       "@types/mocha": "^2.2.40",
       "@types/node": "^7.0.12",
       "@types/supertest": "^2.0.0",
+      "@types/validator": "^9.4.1",
       "autod": "^3.0.1",
       "autod-egg": "^1.1.0",
       "egg-bin": "^4.6.2",
@@ -205,6 +210,12 @@ Lockfile:
     version "4.14.108"
     resolved "http://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.108.tgz#02656af3add2e5b3174f830862c47421c00ef817"
   
+  "@types/md5@^2.1.32":
+    version "2.1.32"
+    resolved "http://registry.npm.taobao.org/@types/md5/download/@types/md5-2.1.32.tgz#93e23437fcd17a7b9ca98d02aa6002e835842fe8"
+    dependencies:
+      "@types/node" "*"
+  
   "@types/mime@*":
     version "2.0.0"
     resolved "http://registry.npm.taobao.org/@types/mime/download/@types/mime-2.0.0.tgz#5a7306e367c539b9f6543499de8dd519fac37a8b"
@@ -267,7 +278,7 @@ Lockfile:
       "@types/events" "*"
       "@types/node" "*"
   
-  "@types/validator@*":
+  "@types/validator@*", "@types/validator@^9.4.1":
     version "9.4.1"
     resolved "http://registry.npm.taobao.org/@types/validator/download/@types/validator-9.4.1.tgz#bea5a290e61f1cbf12af3fd878706aeec2ba0087"
   
@@ -479,7 +490,7 @@ Lockfile:
     version "1.0.1"
     resolved "http://registry.npm.taobao.org/async-each/download/async-each-1.0.1.tgz#19d386a1d9edc6e7c1c85d388aedbcc56d33602d"
   
-  async@^1.4.0:
+  async@^1.4.0, async@^1.5.0:
     version "1.5.2"
     resolved "http://registry.npm.taobao.org/async/download/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
   
@@ -1297,6 +1308,10 @@ Lockfile:
       buffer-alloc-unsafe "^0.1.0"
       buffer-fill "^0.1.0"
   
+  buffer-equal-constant-time@1.0.1:
+    version "1.0.1"
+    resolved "http://registry.npm.taobao.org/buffer-equal-constant-time/download/buffer-equal-constant-time-1.0.1.tgz#f8e71132f7ffe6e01a5c9697a4c6f3e48d5cc819"
+  
   buffer-fill@^0.1.0:
     version "0.1.1"
     resolved "http://registry.npm.taobao.org/buffer-fill/download/buffer-fill-0.1.1.tgz#76d825c4d6e50e06b7a31eb520c04d08cc235071"
@@ -1466,6 +1481,10 @@ Lockfile:
       title-case "^2.1.0"
       upper-case "^1.1.1"
       upper-case-first "^1.1.0"
+  
+  charenc@~0.0.1:
+    version "0.0.2"
+    resolved "http://registry.npm.taobao.org/charenc/download/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
   
   chokidar@^1.6.0:
     version "1.7.0"
@@ -1818,6 +1837,10 @@ Lockfile:
       shebang-command "^1.2.0"
       which "^1.2.9"
   
+  crypt@~0.0.1:
+    version "0.0.2"
+    resolved "http://registry.npm.taobao.org/crypt/download/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
+  
   crypto-random-string@^1.0.0:
     version "1.0.0"
     resolved "http://registry.npm.taobao.org/crypto-random-string/download/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
@@ -2074,6 +2097,12 @@ Lockfile:
     version "0.1.1"
     resolved "http://registry.npm.taobao.org/eastasianwidth/download/eastasianwidth-0.1.1.tgz#44d656de9da415694467335365fb3147b8572b7c"
   
+  ecdsa-sig-formatter@1.0.10:
+    version "1.0.10"
+    resolved "http://registry.npm.taobao.org/ecdsa-sig-formatter/download/ecdsa-sig-formatter-1.0.10.tgz#1c595000f04a8897dfb85000892a0f4c33af86c3"
+    dependencies:
+      safe-buffer "^5.0.1"
+  
   editorconfig@^0.13.2:
     version "0.13.3"
     resolved "http://registry.npm.taobao.org/editorconfig/download/editorconfig-0.13.3.tgz#e5219e587951d60958fd94ea9a9a008cdeff1b34"
@@ -2183,6 +2212,13 @@ Lockfile:
     dependencies:
       is-type-of "^1.2.0"
       jsonp-body "^1.0.0"
+  
+  egg-jwt@^3.0.0:
+    version "3.0.0"
+    resolved "http://registry.npm.taobao.org/egg-jwt/download/egg-jwt-3.0.0.tgz#6bc715d209666ef635547a922442f6fa63bb6c88"
+    dependencies:
+      jsonwebtoken "^8.0.0"
+      koa-jwt2 "^1.0.3"
   
   egg-logger@^1.6.1, egg-logger@^1.6.2:
     version "1.6.2"
@@ -3541,7 +3577,7 @@ Lockfile:
     version "1.0.2"
     resolved "http://registry.npm.taobao.org/is-bluebird/download/is-bluebird-1.0.2.tgz#096439060f4aa411abee19143a84d6a55346d6e2"
   
-  is-buffer@^1.1.5:
+  is-buffer@^1.1.5, is-buffer@~1.1.1:
     version "1.1.6"
     resolved "http://registry.npm.taobao.org/is-buffer/download/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   
@@ -3902,6 +3938,36 @@ Lockfile:
     version "1.0.0"
     resolved "http://registry.npm.taobao.org/jsonp-body/download/jsonp-body-1.0.0.tgz#e610fb6fcea79cf0cc9f27baa7b56377d4b0bb36"
   
+  jsonwebtoken@^8.0.0, jsonwebtoken@^8.1.0:
+    version "8.2.1"
+    resolved "http://registry.npm.taobao.org/jsonwebtoken/download/jsonwebtoken-8.2.1.tgz#333ee39aa8f238f32fa41693e7a2fb7e42f82b31"
+    dependencies:
+      jws "^3.1.4"
+      lodash.includes "^4.3.0"
+      lodash.isboolean "^3.0.3"
+      lodash.isinteger "^4.0.4"
+      lodash.isnumber "^3.0.3"
+      lodash.isplainobject "^4.0.6"
+      lodash.isstring "^4.0.1"
+      lodash.once "^4.0.0"
+      ms "^2.1.1"
+      xtend "^4.0.1"
+  
+  jwa@^1.1.5:
+    version "1.1.6"
+    resolved "http://registry.npm.taobao.org/jwa/download/jwa-1.1.6.tgz#87240e76c9808dbde18783cf2264ef4929ee50e6"
+    dependencies:
+      buffer-equal-constant-time "1.0.1"
+      ecdsa-sig-formatter "1.0.10"
+      safe-buffer "^5.0.1"
+  
+  jws@^3.1.4:
+    version "3.1.5"
+    resolved "http://registry.npm.taobao.org/jws/download/jws-3.1.5.tgz#80d12d05b293d1e841e7cb8b4e69e561adcf834f"
+    dependencies:
+      jwa "^1.1.5"
+      safe-buffer "^5.0.1"
+  
   keygrip@~1.0.2:
     version "1.0.2"
     resolved "http://registry.npm.taobao.org/keygrip/download/keygrip-1.0.2.tgz#ad3297c557069dea8bcfe7a4fa491b75c5ddeb91"
@@ -3960,6 +4026,16 @@ Lockfile:
     version "1.0.0"
     resolved "http://registry.npm.taobao.org/koa-is-json/download/koa-is-json-1.0.0.tgz#273c07edcdcb8df6a2c1ab7d59ee76491451ec14"
   
+  koa-jwt2@^1.0.3:
+    version "1.0.3"
+    resolved "http://registry.npm.taobao.org/koa-jwt2/download/koa-jwt2-1.0.3.tgz#a80309800d0bb2c0f957b8b2cecc2cae0444f219"
+    dependencies:
+      async "^1.5.0"
+      jsonwebtoken "^8.1.0"
+      koa-unless "^1.0.7"
+      lodash.isfunction "^3.0.9"
+      lodash.set "^4.0.0"
+  
   koa-locales@^1.7.0:
     version "1.8.0"
     resolved "http://registry.npm.taobao.org/koa-locales/download/koa-locales-1.8.0.tgz#e8762e937007a0baf9092ea24c44fab860e394bd"
@@ -4015,6 +4091,10 @@ Lockfile:
       fs-readdir-recursive "^1.0.0"
       mime-types "^2.1.8"
       mz "^2.7.0"
+  
+  koa-unless@^1.0.7:
+    version "1.0.7"
+    resolved "http://registry.npm.taobao.org/koa-unless/download/koa-unless-1.0.7.tgz#b9df375e2b4da3043918d48622520c2c0b79f032"
   
   koa@^2.5.0:
     version "2.5.1"
@@ -4149,6 +4229,10 @@ Lockfile:
     dependencies:
       lodash._root "^3.0.0"
   
+  lodash.includes@^4.3.0:
+    version "4.3.0"
+    resolved "http://registry.npm.taobao.org/lodash.includes/download/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
+  
   lodash.isarguments@^3.0.0:
     version "3.1.0"
     resolved "http://registry.npm.taobao.org/lodash.isarguments/download/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
@@ -4156,6 +4240,30 @@ Lockfile:
   lodash.isarray@^3.0.0:
     version "3.0.4"
     resolved "http://registry.npm.taobao.org/lodash.isarray/download/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
+  
+  lodash.isboolean@^3.0.3:
+    version "3.0.3"
+    resolved "http://registry.npm.taobao.org/lodash.isboolean/download/lodash.isboolean-3.0.3.tgz#6c2e171db2a257cd96802fd43b01b20d5f5870f6"
+  
+  lodash.isfunction@^3.0.9:
+    version "3.0.9"
+    resolved "http://registry.npm.taobao.org/lodash.isfunction/download/lodash.isfunction-3.0.9.tgz#06de25df4db327ac931981d1bdb067e5af68d051"
+  
+  lodash.isinteger@^4.0.4:
+    version "4.0.4"
+    resolved "http://registry.npm.taobao.org/lodash.isinteger/download/lodash.isinteger-4.0.4.tgz#619c0af3d03f8b04c31f5882840b77b11cd68343"
+  
+  lodash.isnumber@^3.0.3:
+    version "3.0.3"
+    resolved "http://registry.npm.taobao.org/lodash.isnumber/download/lodash.isnumber-3.0.3.tgz#3ce76810c5928d03352301ac287317f11c0b1ffc"
+  
+  lodash.isplainobject@^4.0.6:
+    version "4.0.6"
+    resolved "http://registry.npm.taobao.org/lodash.isplainobject/download/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
+  
+  lodash.isstring@^4.0.1:
+    version "4.0.1"
+    resolved "http://registry.npm.taobao.org/lodash.isstring/download/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
   
   lodash.keys@^3.0.0:
     version "3.1.2"
@@ -4165,9 +4273,17 @@ Lockfile:
       lodash.isarguments "^3.0.0"
       lodash.isarray "^3.0.0"
   
+  lodash.once@^4.0.0:
+    version "4.1.1"
+    resolved "http://registry.npm.taobao.org/lodash.once/download/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
+  
   lodash.restparam@^3.0.0:
     version "3.6.1"
     resolved "http://registry.npm.taobao.org/lodash.restparam/download/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
+  
+  lodash.set@^4.0.0:
+    version "4.3.2"
+    resolved "http://registry.npm.taobao.org/lodash.set/download/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
   
   lodash.template@^3.0.0:
     version "3.6.2"
@@ -4303,6 +4419,14 @@ Lockfile:
   md5-o-matic@^0.1.1:
     version "0.1.1"
     resolved "http://registry.npm.taobao.org/md5-o-matic/download/md5-o-matic-0.1.1.tgz#822bccd65e117c514fab176b25945d54100a03c3"
+  
+  md5@^2.2.1:
+    version "2.2.1"
+    resolved "http://registry.npm.taobao.org/md5/download/md5-2.2.1.tgz#53ab38d5fe3c8891ba465329ea23fac0540126f9"
+    dependencies:
+      charenc "~0.0.1"
+      crypt "~0.0.1"
+      is-buffer "~1.1.1"
   
   media-typer@0.3.0:
     version "0.3.0"
@@ -4502,7 +4626,7 @@ Lockfile:
     version "2.0.0"
     resolved "http://registry.npm.taobao.org/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   
-  ms@^2.0.0:
+  ms@^2.0.0, ms@^2.1.1:
     version "2.1.1"
     resolved "http://registry.npm.taobao.org/ms/download/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
   
@@ -6514,7 +6638,7 @@ Lockfile:
       spdx-correct "^3.0.0"
       spdx-expression-parse "^3.0.0"
   
-  validator@^9.4.1:
+  validator@9.4.1, validator@^9.4.1:
     version "9.4.1"
     resolved "http://registry.npm.taobao.org/validator/download/validator-9.4.1.tgz#abf466d398b561cd243050112c6ff1de6cc12663"
   
@@ -6658,7 +6782,7 @@ Lockfile:
       commander "^2.9.0"
       cssfilter "0.0.10"
   
-  "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@~4.0.1:
+  "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:
     version "4.0.1"
     resolved "http://registry.npm.taobao.org/xtend/download/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
   

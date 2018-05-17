@@ -2,7 +2,7 @@
 // Do not modify this file!!!!!!!!!
 
 import Test from '../../../app/service/Test';
-import User from '../../../app/service/user';
+import User from '../../../app/service/User';
 
 declare module 'egg' {
   interface IService {

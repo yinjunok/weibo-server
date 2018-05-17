@@ -1,9 +1,13 @@
 import { EggPlugin } from 'egg';
 
 const plugin: EggPlugin = {
-  sequelize : {
+  sequelize: {
     enable: true,
     package: 'egg-sequelize',
+  },
+  jwt: {
+    enable: true,
+    package: "egg-jwt",
   },
 };
 

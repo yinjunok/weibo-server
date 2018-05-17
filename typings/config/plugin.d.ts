@@ -2,3 +2,4 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg-sequelize';
+import 'egg-jwt';

@@ -14,7 +14,12 @@ export default () => {
       csrf: {
         enable: false,
       },
-    }
+    },
+    jwt: {
+      secret: 'you dont know me',
+      match: '/api/v1/auth',
+    },
+    password: 'password secret',
   };
 
   return config;
