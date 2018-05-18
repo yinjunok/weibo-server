@@ -1,7 +1,5 @@
 import { Controller } from 'egg';
-import {
-  isEmail,
-} from 'validator';
+import { isEmail } from 'validator';
 
 interface FindResult {
   emailExist: boolean;
@@ -25,32 +23,56 @@ export default class Registered extends Controller {
     } = ctx.request.body;
 
     if (!isEmail(email)) {
-      ctx.body = '密码格式错误';
+      ctx.body = {
+        error_code: 1,
+        message: '邮箱格式错误',
+      };
       return;
     }
 
     if (password.length < 6) {
-      ctx.body = '密码长度不能小于6位';
+      ctx.body = {
+        error_code: 1,
+        message: '密码长度不能小于6位',
+      };
       return;
     }
 
     if (password !== passwordRepeat) {
-      ctx.body = '两次密码输入不一致';
+      ctx.body = {
+        error_code: 1,
+        message: '两次密码输入不一致',
+      };
       return;
     }
 
-    const result: FindResult = await ctx.service.user.isExist(email, nickname);
+    const result: FindResult = await ctx.service.registered.isExist(email, nickname);
     if (result.emailExist) {
-      ctx.body = '邮箱已经注册';
+      ctx.body = {
+        error_code: 1,
+        message: '邮箱已经注册',
+      };
       return;
     }
 
     if (result.nicknameExist) {
-      ctx.body = '昵称已经存在';
+      ctx.body = {
+        error_code: 1,
+        message: '昵称已经存在',
+      };
       return;
     }
-
-    await ctx.service.user.registered(email, nickname);
-    ctx.body = '注册成功';
+    try {
+      await ctx.service.registered.registered(email, nickname, password);
+      ctx.body = {
+        error_code: 0,
+        message: '注册成功',
+      };
+    } catch (err) {
+      ctx.body = {
+        error_code: 1,
+        message: '未知错误',
+      };
+    }
   }
 }

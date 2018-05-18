@@ -1,5 +1,6 @@
 logs/
 npm-debug.log
+yarn-error.log
 node_modules/
 coverage/
 .idea/
@@ -17,5 +18,3 @@ config/**/*.js
 app/**/*.map
 test/**/*.map
 config/**/*.map
-
-yarn-error.log

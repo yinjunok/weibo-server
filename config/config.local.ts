@@ -19,7 +19,7 @@ export default () => {
       secret: 'you dont know me',
       match: '/api/v1/auth',
     },
-    password: 'password secret',
+    passwordSalt: 'password secret', // 密码加盐
   };
 
   return config;

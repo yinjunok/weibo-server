@@ -49,6 +49,7 @@ export default (app: Application) => {
     },
     sex: {
       type: INTEGER.UNSIGNED,
+      defaultValue: 0,
     },
   },
   {

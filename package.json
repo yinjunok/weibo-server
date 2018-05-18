@@ -24,6 +24,7 @@
     "migrate:down": "egg-sequelize db:migrate:undo"
   },
   "dependencies": {
+    "@types/md5": "^2.1.32",
     "egg": "^2.6.1",
     "egg-jwt": "^3.0.0",
     "egg-scripts": "^2.6.0",
@@ -33,7 +34,6 @@
     "validator": "9.4.1"
   },
   "devDependencies": {
-    "@types/md5": "^2.1.32",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.12",
     "@types/supertest": "^2.0.0",

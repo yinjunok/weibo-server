@@ -26,13 +26,16 @@ export default class Registered extends Service {
     };
   }
 
-  public async registered(email: string, nickname: string) {
-    const { app } = this.ctx;
-    let result: any;
+  public async registered(email: string, nickname: string, password: string) {
+    const { app, helper } = this.ctx;
     try {
-      result = await app.model.User.create({ email, nickname });
+      await app.model.User.create({
+        email,
+        nickname,
+        password: helper.addSalt(password + app.config.passwordSalt),
+      });
     } catch (err) {
-      return err;
+      throw new Error(err);
     }
   }
 }
