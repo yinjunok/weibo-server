@@ -5,7 +5,7 @@ export default class Login extends Controller {
   public async login() {
     const { ctx } = this;
     const {
-      email_name,
+      email_or_name,
       password,
     } = ctx.request.body;
 
@@ -25,7 +25,7 @@ export default class Login extends Controller {
     //   return;
     // }
     
-    await ctx.service.login.login(email_name, password);
-    ctx.body = '123';
+    const result = await ctx.service.login.login(email_or_name, password);
+    ctx.body = result;
   }
 }

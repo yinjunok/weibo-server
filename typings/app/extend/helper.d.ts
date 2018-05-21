@@ -5,5 +5,6 @@ import ExtendObject from '../../../app/extend/helper';
 declare module 'egg' {
   interface IHelper {
     addSalt: typeof ExtendObject.addSalt;
+    deleProp: typeof ExtendObject.deleProp;
   }
 }

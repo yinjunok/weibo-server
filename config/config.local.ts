@@ -18,6 +18,7 @@ export default () => {
     jwt: {
       secret: 'you dont know me',
       match: '/api/v1/auth',
+      enable: true,
     },
     passwordSalt: 'password secret', // 密码加盐
   };

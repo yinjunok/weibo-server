@@ -34,6 +34,7 @@
     "validator": "9.4.1"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^7.2.7",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.12",
     "@types/supertest": "^2.0.0",
