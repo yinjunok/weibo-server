@@ -1,7 +1,6 @@
 declare module 'egg' {
   import 'egg-sequelize';
-  
-  
+
   export interface Application {
     // jwt
     jwt: {
@@ -27,3 +26,6 @@ declare module 'egg' {
     }
   }
 }
+
+declare module "stream-wormhole";
+declare module 'await-stream-ready';
