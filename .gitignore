@@ -12,6 +12,7 @@ logs/
 *.lock
 *.js
 
+app/public/*
 app/**/*.js
 test/**/*.js
 config/**/*.js
