@@ -15,6 +15,9 @@ export default (app: Application) => {
     src: {
       type: STRING,
     },
+    filename: {
+      type: STRING,
+    },
     created_at: {
       type: DATE,
     },
