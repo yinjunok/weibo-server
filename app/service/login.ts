@@ -2,7 +2,7 @@ import { Service } from 'egg';
 import { Op } from 'sequelize';
 
 export default class Login extends Service {
-  public async login(nameOrEmail: string, password: string) {
+  public async login(username: string, password: string) {
     const { app, helper } = this.ctx;
 
     let result;
@@ -10,10 +10,11 @@ export default class Login extends Service {
       result = await app.model.User.findOne({
         where: {
           [Op.or]: [
-            { email: nameOrEmail },
-            { nickname: nameOrEmail },
+            { email: username },
+            { nickname: username },
           ]},
       });
+
       if (result) {
         if (this.verifyPassword(password, result.dataValues.password)) {
           const data = helper.deleProp(result.dataValues, ['password']);
@@ -21,8 +22,7 @@ export default class Login extends Service {
             error_code: 0,
             message: '登录成功',
             token: app.jwt.sign({
-              email: result.email,
-              nickname: result.nickname,
+              ...data,
             },
             app.config.jwt.secret, {expiresIn: '30d'}),
             data,

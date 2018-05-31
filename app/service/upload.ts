@@ -7,7 +7,7 @@ import * as crypto from 'crypto';
 import * as sendToWormhole from 'stream-wormhole';
 
 export default class Upload extends Service {
-  assetRoot: string;
+  private readonly assetRoot: string;
 
   constructor (ctx) {
     super(ctx);

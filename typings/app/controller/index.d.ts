@@ -3,12 +3,14 @@
 
 import Home from '../../../app/controller/home';
 import Login from '../../../app/controller/login';
+import Post from '../../../app/controller/post';
 import Registered from '../../../app/controller/registered';
 
 declare module 'egg' {
   interface IController {
     home: Home;
     login: Login;
+    post: Post;
     registered: Registered;
   }
 }
