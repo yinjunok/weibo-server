@@ -9,6 +9,7 @@ export default () => {
       port: '3306',
       username: '@weibo_dev',
       password: 'weibo_DEV@1234',
+      timezone: '+08:00',
     },
     security: {
       csrf: {
