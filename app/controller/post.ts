@@ -60,14 +60,7 @@ export default class Post extends Controller {
     const postId = ctx.params.id;
 
     try {
-      const result = await ctx.service.post.delete(postId, userInfo.id);
-      if (result === 1) {
-        ctx.body = {
-          error_code: 1,
-          message: '不能删除不是你的帖子',
-        };
-        return;
-      }
+      await ctx.service.post.delete(postId, userInfo.id + 1);
       ctx.body = {
         error_code: 0,
         message: '删除成功',

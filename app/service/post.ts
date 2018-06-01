@@ -54,7 +54,7 @@ export default class Post extends Service {
           },
         );
       } else {
-        return 1;
+        throw new Error('不能删除不属于自己的帖子');
       }
     } catch (err) {
       throw err;
