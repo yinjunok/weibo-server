@@ -8,6 +8,12 @@ import { isEmpty } from 'validator';
 // }
 
 export default class Post extends Controller {
+  // public async index() {
+  //   const { ctx } = this;
+
+  //   const userInfo = this.getUserInfo();
+  // }
+
   public async create() {
     const { ctx } = this;
 
@@ -28,8 +34,7 @@ export default class Post extends Controller {
       };
     }
 
-    const token = ctx.request.header['authorization'].replace(/^Bearer\s{1}/, '');
-    const userInfo: any = ctx.app.jwt.decode(token);
+    const userInfo: any = this.getUserInfo();
 
     try {
       await ctx.service.post.create(
@@ -55,8 +60,7 @@ export default class Post extends Controller {
   public async destroy() {
     const { ctx } = this;
 
-    const token = ctx.request.header['authorization'].replace(/^Bearer\s{1}/, '');
-    const userInfo: any = ctx.app.jwt.decode(token);
+    const userInfo: any = this.getUserInfo();
     const postId = ctx.params.id;
 
     try {
@@ -72,5 +76,13 @@ export default class Post extends Controller {
       };
       ctx.response.status = 500;
     }
+  }
+
+  private getUserInfo() {
+    const { ctx } = this;
+
+    const token = ctx.request.header['authorization'].replace(/^Bearer\s{1}/, '');
+    const userInfo: any = ctx.app.jwt.decode(token);
+    return userInfo;
   }
 }

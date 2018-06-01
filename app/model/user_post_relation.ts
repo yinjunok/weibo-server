@@ -4,7 +4,7 @@ import { Application } from 'egg';
 export default (app: Application) => {
   const { INTEGER, DATE } = app.Sequelize;
 
-  const reply = app.model.define('reply', {
+  const userPostRelation = app.model.define('user_post_relation', {
     user_id: {
       type: INTEGER.UNSIGNED,
     },
@@ -30,5 +30,5 @@ export default (app: Application) => {
   },
 );
 
-  return reply;
+  return userPostRelation;
 };
