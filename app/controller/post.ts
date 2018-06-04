@@ -8,11 +8,26 @@ import { isEmpty } from 'validator';
 // }
 
 export default class Post extends Controller {
-  // public async index() {
-  //   const { ctx } = this;
+  public async index() {
+    const { ctx } = this;
+    const {
+      page,
+      limit,
+    } = ctx.request.query;
 
-  //   const userInfo = this.getUserInfo();
-  // }
+    const nPage = page ? parseInt(page, 10) : 1;
+    const nLimit = limit ? parseInt(limit, 10) : 20;
+
+    const userInfo = this.getUserInfo();
+
+    let result;
+    try {
+      result = await ctx.service.post.index(userInfo.id, nPage, nLimit);
+    } catch (err) {
+      throw err;
+    }
+    ctx.body = result;
+  }
 
   public async create() {
     const { ctx } = this;

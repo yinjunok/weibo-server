@@ -4,11 +4,11 @@ export default (app: Application) => {
   const { INTEGER, DATE } = app.Sequelize;
 
   const userRelation = app.model.define('user_relation', {
-    follower_id: {
+    user_id: {
       type: INTEGER.UNSIGNED,
       comment: '操作者的 id',
     },
-    followed_id: {
+    another_user_id: {
       type: INTEGER.UNSIGNED,
       comment: '被操作者的 id',
     },
