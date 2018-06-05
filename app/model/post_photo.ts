@@ -6,12 +6,13 @@ export default (app: Application) => {
   const postPhoto = app.model.define('post_photo', {
     post_id: {
       type: INTEGER.UNSIGNED,
-      defaultValue: null,
       comment: '帖子 ID',
+      primaryKey: true,
     },
     photo_id: {
       type: INTEGER.UNSIGNED,
       comment: '图片 ID',
+      primaryKey: true,
     },
     created_at: {
       type: DATE,

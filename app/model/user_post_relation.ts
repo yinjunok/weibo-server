@@ -7,9 +7,11 @@ export default (app: Application) => {
   const userPostRelation = app.model.define('user_post_relation', {
     user_id: {
       type: INTEGER.UNSIGNED,
+      primaryKey: true,
     },
     post_id: {
       type: INTEGER.UNSIGNED,
+      primaryKey: true,
     },
     like: {
       type: INTEGER.UNSIGNED,

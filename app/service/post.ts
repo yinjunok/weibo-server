@@ -11,83 +11,218 @@ import { Service } from 'egg';
 // };
 
 export default class Post extends Service {
-  public async index(userId: number, page: number = 1, limit: number = 20) {
-    const { app } = this.ctx;
+    public async index(userId: number, page: number = 1, limit: number = 20) {
+      console.log(page, limit);
+      const { app } = this.ctx;
+      try {
+        // 关注的人
+        let following = await app.model.UserRelation.findAll({
+          where: {
+            user_id: userId,
+            status: [1],
+          },
+        });
+        following = following.map((f) => f.another_user_id);
 
-    try {
-      // 查询关注的人 id;
-      const following = await app.model.UserRelation.findAll({
-        where: {
-          user_id: userId,
-          status: 1,
-        },
-        attributes: ['another_user_id'],
-      });
+        // 直接的 post
+        const postList = await app.model.Post.findAll({
+          where: {
+            author_id: [...following, userId],
+            status: [0],
+          },
+          order: [['created_at', 'DESC']],
+        });
 
-      // 获取关注的人 ID
-      const anotherUserIds = following.map((user) => user.another_user_id);
+         // 引用的 post
+        const referenceId = postList.map((p) => p.reference_post_id);
+        const referencePost = await app.model.Post.findAll({
+          where: {
+            id: referenceId,
+            status: [0],
+          },
+        });
 
-      // 查询 post 作者信息
-      const author = await app.model.User.findAll({
-        where: {
-          id: [...anotherUserIds, userId],
-        },
-        attributes: { exclude: ['password', 'created_at', 'updated_at'] },
-      });
+        const postIds = postList.map((p) => p.reference_post_id).concat(referenceId);
+        let photoIds = await app.model.PostPhoto.findAll({
+          where: {
+            post_id: postIds,
+          },
+        });
+        photoIds = photoIds.map((p) => p.photo_id);
 
-      // 查询首页 post
-      const post = await app.model.Post.findAll({
-        offset: (page - 1) * limit,
-        limit,
-        order: [['created_at', 'DESC']],
-        where: {
-          author_id: [...anotherUserIds, userId],
-          status: [0],
-        },
-        attributes: { include: [[app.model.fn('COUNT', app.model.col('*')), 'total']] },
-      });
+        // 作者信息
+        let authorId = referencePost.map((p) => p.author_id).concat(following, [userId]);
 
-      // 查询 post 引用的 post
-      const referenceId = post.map((p) => p.reference_post_id);
-      const referencePost = await app.model.Post.findAll({
-        where: {
-          id: [...referenceId],
-        },
-      });
-
-      // 组装搜索结果
-      const result = post.map((p) => {
-        let pAuthor = null;
-        let pReference = null;
-
-        for (const val of author) {
-          if (p.author_id === val.id) {
-            pAuthor = val.dataValues;
-            break;
+        // 作者 id 数组去重.
+        authorId = authorId.reduce((acc, cur) => {
+          if (acc.indexOf(cur) === -1) {
+            return [...acc, cur];
           }
+          return acc;
+        }, []);
+
+        const [authors, photos, postRelation] = await Promise.all([
+          app.model.User.findAll({
+            where: {
+              id: authorId,
+            },
+            attributes: { exclude: ['password', 'created_at', 'updated_at'] },
+          }),
+          app.model.Photo.findAll({
+            where: {
+              id: photoIds,
+            },
+          }),
+          app.model.UserPostRelation.findAll({
+            where: {
+              post_id: postIds,
+            },
+          }),
+        ]);
+
+        // 组装数据
+        for (const val of postList) {
+          val.dataValues.author = null;
+          val.dataValues.photos = [];
+          val.dataValues.reference = null;
+          val.dataValues.collection = 0;
+          val.dataValues.like = 0;
         }
 
         for (const val of referencePost) {
-          if (p.reference_post_id === val.id) {
-            pReference = val.dataValues;
-            break;
+          val.dataValues.author = null;
+          val.dataValues.photos = [];
+
+          for (const v of postList) {
+            if (v.reference_post_id === val.id) {
+              v.dataValues.reference = val;
+            }
+          }
+        }
+
+        for (const val of authors) {
+          for (const val2 of postList) {
+            if (val2.author_id === val.id) {
+              val2.dataValues.author = val;
+            }
+          }
+
+          for (const val3 of referencePost) {
+            if (val3.author_id === val.id) {
+              val3.dataValues.author = val;
+            }
+          }
+        }
+
+        for (const val of photos) {
+          for (const val2 of postList) {
+            if (val2.id === val.post_id) {
+              val2.dataValues.photos.push(val);
+            }
+          }
+
+          for (const val3 of referencePost) {
+            if (val3.author_id === val.id) {
+              val3.dataValues.photos.push(val);
+            }
+          }
+        }
+
+        for (const val of postRelation) {
+          for (const v of postList) {
+            if (v.id === val.post_id) {
+              v.dataValues.collection = v.collection;
+              v.dataValues.like = v.like;
+            }
           }
         }
 
         return {
-          ...p.dataValues,
-          reference: pReference,
-          author: pAuthor,
+          postList,
         };
-      });
-
-//      console.log(result);
-
-      return result;
-    } catch (err) {
-      throw err;
+      } catch (err) {
+        throw err;
+      }
     }
-  }
+
+
+//   public async index(userId: number, page: number = 1, limit: number = 20) {
+//     const { app } = this.ctx;
+
+//     try {
+//       // 查询关注的人 id;
+//       const following = await app.model.UserRelation.findAll({
+//         where: {
+//           user_id: userId,
+//           status: 1,
+//         },
+//         attributes: ['another_user_id'],
+//       });
+
+//       // 获取关注的人 ID
+//       const anotherUserIds = following.map((user) => user.another_user_id);
+
+//       // 查询 post 作者信息
+//       const author = await app.model.User.findAll({
+//         where: {
+//           id: [...anotherUserIds, userId],
+//         },
+//         attributes: { exclude: ['password', 'created_at', 'updated_at'] },
+//       });
+
+//       // 查询首页 post
+//       const post = await app.model.Post.findAll({
+//         offset: (page - 1) * limit,
+//         limit,
+//         order: [['created_at', 'DESC']],
+//         where: {
+//           author_id: [...anotherUserIds, userId],
+//           status: [0],
+//         },
+//         attributes: { include: [[app.model.fn('COUNT', app.model.col('*')), 'total']] },
+//       });
+
+//       // 查询 post 引用的 post
+//       const referenceId = post.map((p) => p.reference_post_id);
+//       const referencePost = await app.model.Post.findAll({
+//         where: {
+//           id: [...referenceId],
+//         },
+//       });
+
+//       // 组装搜索结果
+//       const result = post.map((p) => {
+//         let pAuthor = null;
+//         let pReference = null;
+
+//         for (const val of author) {
+//           if (p.author_id === val.id) {
+//             pAuthor = val.dataValues;
+//             break;
+//           }
+//         }
+
+//         for (const val of referencePost) {
+//           if (p.reference_post_id === val.id) {
+//             pReference = val.dataValues;
+//             break;
+//           }
+//         }
+
+//         return {
+//           ...p.dataValues,
+//           reference: pReference,
+//           author: pAuthor,
+//         };
+//       });
+
+// //      console.log(result);
+
+//       return result;
+//     } catch (err) {
+//       throw err;
+//     }
+//   }
 
   public async create(
     user: string,

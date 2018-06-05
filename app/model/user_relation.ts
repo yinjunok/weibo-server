@@ -6,10 +6,12 @@ export default (app: Application) => {
   const userRelation = app.model.define('user_relation', {
     user_id: {
       type: INTEGER.UNSIGNED,
+      primaryKey: true,
       comment: '操作者的 id',
     },
     another_user_id: {
       type: INTEGER.UNSIGNED,
+      primaryKey: true,
       comment: '被操作者的 id',
     },
     status: {
