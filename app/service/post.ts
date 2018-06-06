@@ -25,13 +25,24 @@ export default class Post extends Service {
         following = following.map((f) => f.another_user_id);
 
         // 直接的 post
-        const postList = await app.model.Post.findAll({
-          where: {
-            author_id: [...following, userId],
-            status: [0],
-          },
-          order: [['created_at', 'DESC']],
-        });
+        const [postList, total] = await Promise.all([
+          app.model.Post.findAll({
+            where: {
+              author_id: [...following, userId],
+              status: [0],
+            },
+            order: [['created_at', 'DESC']],
+            offset: (page - 1) * limit,
+            limit,
+          }),
+          app.model.Post.findAll({
+            where: {
+              author_id: [...following, userId],
+              status: [0],
+            },
+            attributes: [[app.model.fn('COUNT', app.model.col('*')), 'total']],
+          }),
+        ]);
 
          // 引用的 post
         const referenceId = postList.map((p) => p.reference_post_id);
@@ -139,6 +150,9 @@ export default class Post extends Service {
 
         return {
           postList,
+          total: total[0].dataValues.total,
+          page,
+          limit,
         };
       } catch (err) {
         throw err;
