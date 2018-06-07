@@ -21,7 +21,6 @@ export default class Upload extends Service {
   public async upload(stream: FileStream, dir: string) {
     const ext = path.extname(stream.filename).toLocaleLowerCase(); // 扩展名
     const filename = stream.filename;   // 文件原名
-    console.log(dir);
     // 文件存放的目标目录
     const target = path.join(
       this.assetRoot,

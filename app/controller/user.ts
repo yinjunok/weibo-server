@@ -1,16 +1,35 @@
 import { Controller } from 'egg';
 
 export default class User extends Controller {
-  public async editAvatar() {
-    const { ctx } = this;
-    console.log(ctx.userInfo);
-    ctx.body = ctx.userInfo;
-  }
+  /**
+   *  type: avatar, cover, photo
+   */
+  public async uploadImage() {
+    const uploadType = ['avatar', 'cover', 'photo'];
 
-  public async editCover() {
     const { ctx } = this;
+    const { type } = ctx.query;
 
-    ctx.body = '编辑封面';
+    if (uploadType.indexOf(type) === -1) {
+      ctx.body = {
+        error_code: 1,
+        message: '参数类型错误',
+      };
+      return;
+    }
+
+    const stream = await ctx.getFileStream();
+
+    try {
+      const result = await ctx.service.upload.upload(stream, `person/${ctx.userInfo.id}`);
+      await ctx.service.user.uploadImage(result.src, ctx.userInfo.id, type, result.filename);
+      ctx.body = {
+        error_code: 0,
+        message: '',
+      };
+    } catch (err) {
+      throw err;
+    }
   }
 
   public async editInfo() {

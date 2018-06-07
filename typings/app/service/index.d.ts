@@ -6,6 +6,7 @@ import Post from '../../../app/service/post';
 import Registered from '../../../app/service/registered';
 import Test from '../../../app/service/Test';
 import Upload from '../../../app/service/upload';
+import User from '../../../app/service/user';
 
 declare module 'egg' {
   interface IService {
@@ -14,5 +15,6 @@ declare module 'egg' {
     registered: Registered;
     test: Test;
     upload: Upload;
+    user: User;
   }
 }
