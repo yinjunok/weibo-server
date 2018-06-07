@@ -19,7 +19,7 @@ export default (appInfo: EggAppConfig) => {
   config.keys = appInfo.name + '_1525833587068_7787';
 
   // add your config here
-  config.middleware = [];
+  config.middleware = [ 'parsetoken' ];
 
   return config;
 };

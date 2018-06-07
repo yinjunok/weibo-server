@@ -1,12 +1,6 @@
 import { Controller } from 'egg';
 import { isEmpty } from 'validator';
 
-// interface RequestPost {
-//   reference_post_id: number;
-//   content: string;
-//   photo: number[];
-// }
-
 export default class Post extends Controller {
   public async index() {
     const { ctx } = this;
@@ -18,7 +12,7 @@ export default class Post extends Controller {
     const nPage = page ? parseInt(page, 10) : 1;
     const nLimit = limit ? parseInt(limit, 10) : 20;
 
-    const userInfo = this.getUserInfo();
+    const userInfo = ctx.userInfo;
 
     let result;
     try {
@@ -56,7 +50,7 @@ export default class Post extends Controller {
       };
     }
 
-    const userInfo: any = this.getUserInfo();
+    const userInfo: any = ctx.userInfo;
 
     try {
       await ctx.service.post.create(
@@ -82,7 +76,7 @@ export default class Post extends Controller {
   public async destroy() {
     const { ctx } = this;
 
-    const userInfo: any = this.getUserInfo();
+    const userInfo: any = ctx.userInfo;
     const postId = ctx.params.id;
 
     try {
@@ -98,13 +92,5 @@ export default class Post extends Controller {
       };
       ctx.response.status = 500;
     }
-  }
-
-  private getUserInfo() {
-    const { ctx } = this;
-
-    const token = ctx.request.header['authorization'].replace(/^Bearer\s{1}/, '');
-    const userInfo: any = ctx.app.jwt.decode(token);
-    return userInfo;
   }
 }

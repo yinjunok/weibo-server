@@ -21,6 +21,10 @@ export default () => {
       match: '/api/v1/auth',
       enable: true,
     },
+    parsetoken: {
+      match: '/api/v1/auth',
+      enable: true,
+    },
     passwordSalt: 'password secret', // 密码加盐
   };
 
