@@ -83,7 +83,41 @@ export default class User extends Controller {
 
   public async changePassword() {
     const { ctx } = this;
+    const {
+      current,
+      password,
+      repeat,
+    } = ctx.request.body;
 
-    ctx.body = '编辑密码';
+    if (isEmpty(password)) {
+      ctx.body = {
+        error_code: 1,
+        message: '密码不能为空',
+      };
+      return;
+    }
+
+    if (password.length < 6) {
+      ctx.body = {
+        error_code: 1,
+        message: '密码长度不能小于 6 位',
+      };
+      return;
+    }
+
+    if (password !== repeat) {
+      ctx.body = {
+        error_code: 1,
+        message: '两次密码输入不一致',
+      };
+      return;
+    }
+
+    try {
+      const result = await ctx.service.user.changePassword(ctx.userInfo.id, current, password);
+      ctx.body = result;
+    } catch (err) {
+      throw err;
+    }
   }
 }

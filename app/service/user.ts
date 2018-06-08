@@ -113,4 +113,26 @@ export default class User extends Service {
       message: '',
     };
   }
+
+  public async changePassword(userId: number, current: string, password: string) {
+    const { app, helper } = this.ctx;
+    try {
+      const user = await app.model.User.findById(userId);
+
+      if (user.password !== helper.addSalt(current + app.config.passwordSalt)) {
+        return {
+          error_code: 1,
+          message: '当前密码不正确',
+        };
+      }
+
+      await user.update({ password: helper.addSalt(password + app.config.passwordSalt) });
+      return {
+        error_code: 0,
+        message: '修改密码成功',
+      };
+    } catch (err) {
+      throw err;
+    }
+  }
 }
