@@ -6,6 +6,11 @@ import * as path from 'path';
 import * as crypto from 'crypto';
 import * as sendToWormhole from 'stream-wormhole';
 
+interface UploadReturn  {
+  filename: string;
+  src: string;
+}
+
 export default class Upload extends Service {
   private readonly assetRoot: string;
 
@@ -18,7 +23,7 @@ export default class Upload extends Service {
    *  保存文件, 并用 MD5 值改名
    */
 
-  public async upload(stream: FileStream, dir: string) {
+  public async upload(stream: FileStream, dir: string): Promise<UploadReturn> {
     const ext = path.extname(stream.filename).toLocaleLowerCase(); // 扩展名
     const filename = stream.filename;   // 文件原名
     // 文件存放的目标目录
