@@ -120,4 +120,31 @@ export default class User extends Controller {
       throw err;
     }
   }
+
+  public async postOparating() {
+    const { ctx } = this;
+    const actionTypes = ['like', 'collection'];
+    const { type, post_id } = ctx.request.body;
+
+    if (actionTypes.indexOf(type) === -1) {
+      ctx.body = {
+        error_code: 1,
+        message: '参数错误',
+      };
+      return;
+    }
+
+    try {
+      await ctx.service.user.postOparating(ctx.userInfo.id, post_id, type);
+      ctx.body = {
+        error_code: 0,
+        message: '',
+      };
+    } catch (err) {
+      ctx.body = {
+        error_code: 1,
+        message: '未知错误',
+      };
+    }
+  }
 }

@@ -135,4 +135,33 @@ export default class User extends Service {
       throw err;
     }
   }
+
+  public async postOparating(userId: number, postId: number, type: string) {
+    const { app: { model } } = this.ctx;
+
+    try {
+      const [ record ] = await model.UserPostRelation.findOrCreate({
+        where: {
+          user_id: userId,
+          post_id: postId,
+        },
+      });
+      switch (type) {
+        case 'like':
+          await record.update({
+            like: record.like === 0 ? 1 : 0,
+          });
+          break;
+        case 'collection':
+          await record.update({
+            collection: record.collection === 0 ? 1 : 0,
+          });
+          break;
+        default:
+          throw new Error('操作类型不存在');
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
 }
