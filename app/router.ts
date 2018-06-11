@@ -12,4 +12,5 @@ export default (app: Application) => {
   router.post('/api/v1/auth/user/edit/info', controller.user.editInfo);
   router.post('/api/v1/auth/user/edit/change-password', controller.user.changePassword);
   router.post('/api/v1/auth/user/post-oparating', controller.user.postOparating);
+  router.post('/api/v1/auth/reply/create', controller.reply.create);
 };
