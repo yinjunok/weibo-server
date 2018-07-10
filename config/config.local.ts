@@ -1,4 +1,5 @@
 import { DefaultConfig } from './config.default';
+import * as ossConfig from './secret';
 
 export default () => {
   const config: DefaultConfig = {
@@ -26,6 +27,7 @@ export default () => {
       enable: true,
     },
     passwordSalt: 'password secret', // 密码加盐
+    ossConfig,
   };
 
   return config;

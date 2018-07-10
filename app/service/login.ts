@@ -18,29 +18,32 @@ export default class Login extends Service {
       if (result) {
         if (this.verifyPassword(password, result.dataValues.password)) {
           const data = helper.deleProp(result.dataValues, ['password']);
+          const token = app.jwt.sign(
+            { ...data },
+            app.config.jwt.secret, {expiresIn: '30d'},
+          );
+
           return {
             error_code: 0,
             message: '登录成功',
-            token: app.jwt.sign({
+            data: {
               ...data,
+              token,
             },
-            app.config.jwt.secret, {expiresIn: '30d'}),
-            data,
-          }
+          };
         } else {
           return {
             error_code: 1,
             message: '密码错误',
-          }
+          };
         }
       } else {
         return {
           error_code: 1,
           message: '用户不存在',
-        }
+        };
       }
     } catch (err) {
-      console.log(err);
       throw new Error('未知错误');
     }
   }

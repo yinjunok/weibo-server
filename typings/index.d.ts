@@ -31,3 +31,4 @@ declare module "stream-wormhole";
 declare module 'await-stream-ready';
 declare module 'stream-to-array';
 declare module 'fs';
+declare module 'ali-oss';

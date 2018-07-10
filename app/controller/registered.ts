@@ -19,7 +19,7 @@ export default class Registered extends Controller {
       email,
       nickname,
       password,
-      passwordRepeat,
+      password_repeat,
     } = ctx.request.body;
 
     if (!isEmail(email)) {
@@ -38,7 +38,7 @@ export default class Registered extends Controller {
       return;
     }
 
-    if (password !== passwordRepeat) {
+    if (password !== password_repeat) {
       ctx.body = {
         error_code: 1,
         message: '两次密码输入不一致',
