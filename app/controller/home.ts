@@ -12,7 +12,7 @@ export default class HomeController extends Controller {
 
     let src;
     try {
-      src = await ctx.service.upload.upload(stream, 'person/1231564');
+      src = await ctx.service.uploadTest.upload(stream, 'person/123');
       console.log('控制器', src);
     } catch (err) {
       console.log('控制器err',err);

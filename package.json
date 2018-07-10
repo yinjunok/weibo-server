@@ -24,6 +24,7 @@
     "migrate:down": "egg-sequelize db:migrate:undo"
   },
   "dependencies": {
+    "@types/make-dir": "^1.0.3",
     "@types/md5": "^2.1.32",
     "ali-oss": "^5.3.1",
     "await-stream-ready": "^1.0.1",
@@ -32,6 +33,7 @@
     "egg-redis": "^2.0.0",
     "egg-scripts": "^2.6.0",
     "egg-sequelize": "^3.1.4",
+    "make-dir": "^1.3.0",
     "md5": "^2.2.1",
     "mysql2": "^1.5.3",
     "stream-to-array": "^2.3.0",

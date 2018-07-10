@@ -6,6 +6,7 @@ import Post from '../../../app/service/post';
 import Registered from '../../../app/service/registered';
 import Reply from '../../../app/service/reply';
 import Test from '../../../app/service/Test';
+import UploadTest from '../../../app/service/upload-test';
 import Upload from '../../../app/service/upload';
 import User from '../../../app/service/user';
 
@@ -16,6 +17,7 @@ declare module 'egg' {
     registered: Registered;
     reply: Reply;
     test: Test;
+    uploadTest: UploadTest;
     upload: Upload;
     user: User;
   }

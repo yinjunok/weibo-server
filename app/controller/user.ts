@@ -22,7 +22,7 @@ export default class User extends Controller {
     const stream = await ctx.getFileStream();
 
     try {
-      const result = await ctx.service.upload.upload(stream, `person/${ctx.userInfo.id}`);
+      const result = await ctx.service.upload.upload(stream, `person/${ctx.userInfo.id}/${type}`);
       await ctx.service.user.uploadImage({
         userId: ctx.userInfo.id,
         type,
