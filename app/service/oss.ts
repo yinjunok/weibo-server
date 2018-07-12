@@ -48,6 +48,15 @@ export default class Upload extends Service {
     };
   }
 
+  public async delete(src: string) {
+    const client = new OSS(this.config.ossConfig.default);
+    try {
+      await client.delete(src);
+    } catch (err) {
+      throw err;
+    }
+  }
+
   private async calcMD5(target: string) {
     return new Promise((res) => {
       const stream = fs.createReadStream(target);

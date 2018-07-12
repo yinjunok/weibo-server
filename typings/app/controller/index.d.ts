@@ -2,6 +2,7 @@
 // Do not modify this file!!!!!!!!!
 
 import Home from '../../../app/controller/home';
+import Images from '../../../app/controller/images';
 import Login from '../../../app/controller/login';
 import Post from '../../../app/controller/post';
 import Registered from '../../../app/controller/registered';
@@ -11,6 +12,7 @@ import User from '../../../app/controller/user';
 declare module 'egg' {
   interface IController {
     home: Home;
+    images: Images;
     login: Login;
     post: Post;
     registered: Registered;

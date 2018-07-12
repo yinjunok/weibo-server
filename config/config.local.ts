@@ -27,6 +27,7 @@ export default () => {
       enable: true,
     },
     passwordSalt: 'password secret', // 密码加盐
+    ossPrefix: 'http://weibo-dev.oss-cn-beijing.aliyuncs.com/',
     ossConfig,
   };
 
