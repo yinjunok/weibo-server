@@ -24,6 +24,11 @@ export default (app: Application) => {
       defaultValue: 0,
       comment: '回复数量',
     },
+    reference_amount: {
+      type: INTEGER.UNSIGNED,
+      defaultValue: 0,
+      comment: '转发数',
+    },
     like_amount: {
       type: INTEGER.UNSIGNED,
       defaultValue: 0,

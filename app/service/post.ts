@@ -42,7 +42,10 @@ export default class Post extends Service {
         },
       });
 
-      const postIds = postList.map((p) => p.reference_post_id).concat(referenceId);
+      const postIds = postList.map((p) => p.reference_post_id)
+                              .filter((id) => id !== null)
+                              .concat(referenceId.filter((id) => id !== null));
+
       let photoIds = await app.model.PostPhoto.findAll({
         where: {
           post_id: postIds,
@@ -60,7 +63,7 @@ export default class Post extends Service {
         }
         return acc;
       }, []);
-
+      
       const [authors, photos, postRelation] = await Promise.all([
         app.model.User.findAll({
           where: {

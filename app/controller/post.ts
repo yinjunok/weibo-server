@@ -68,7 +68,7 @@ export default class Post extends Controller {
     }
 
     ctx.body = {
-      error_code: 1,
+      error_code: 0,
       message: '发布成功',
     };
   }
