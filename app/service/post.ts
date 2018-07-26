@@ -1,5 +1,20 @@
 import { Service } from 'egg';
 
+// {
+//   author,
+//   post,
+//   relation: {
+//     like,
+//     collection,
+//   },
+//   photo,
+//   reference: {
+//     post,
+//     author,
+//     photo,
+//   },
+// }
+
 export default class Post extends Service {
   public async index(userId: number, page: number = 1, limit: number = 20) {
     const { app } = this.ctx;
@@ -42,10 +57,12 @@ export default class Post extends Service {
         },
       });
 
-      const postIds = postList.map((p) => p.reference_post_id)
-                              .filter((id) => id !== null)
-                              .concat(referenceId.filter((id) => id !== null));
+      const postIds = postList
+                        .map((p) => p.reference_post_id)
+                        .filter((id) => id !== null)
+                        .concat(referenceId.filter((id) => id !== null));
 
+      console.log(postIds);
       let photoIds = await app.model.PostPhoto.findAll({
         where: {
           post_id: postIds,
@@ -63,7 +80,7 @@ export default class Post extends Service {
         }
         return acc;
       }, []);
-      
+
       const [authors, photos, postRelation] = await Promise.all([
         app.model.User.findAll({
           where: {
@@ -151,6 +168,25 @@ export default class Post extends Service {
     }
   }
 
+  public async newIndex(userId: number, page: number = 1, limit: number = 20) {
+    const { model } = this.ctx.app;
+
+    // 获取关注的人 id
+    const following = await model.UserRelation.findAll({
+      where: {
+        user_id: userId,
+        status: 1,
+      },
+      attributes: ['another_user_id'],
+    });
+    const followingIds = following.map((f) => f.dataValues.another_user_id);
+
+    // 获取第一层 post
+    const posts = await this.getPostByUser([...followingIds, userId], page, limit, userId);
+
+    return posts;
+  }
+
   public async create(
     user: string,
     content: string,
@@ -179,7 +215,17 @@ export default class Post extends Service {
       });
 
       try {
-        await app.model.PostPhoto.bulkCreate(photoModel);
+        await Promise.all([
+          app.model.Photo.update(
+            { post_id: newPost.id },
+            {
+              where: {
+                id: photo,
+              },
+            },
+          ),
+          app.model.PostPhoto.bulkCreate(photoModel)
+        ]);
       } catch (err) {
         throw err;
       }
@@ -210,4 +256,141 @@ export default class Post extends Service {
       throw err;
     }
   }
+
+  private async getPostByUser(authorId: number[], page: number = 1, limit: number = 20, userId: number) {
+    const { model } = this.ctx.app;
+
+    try {
+      const [list, total] = await Promise.all([
+        model.Post.findAll({
+          where: {
+            author_id: authorId,
+            status: 0,
+          },
+          order: [['created_at', 'DESC']],
+          offset: (page - 1) * limit,
+          limit,
+        }),
+        model.Post.findAll({
+          where: {
+            author_id: authorId,
+            status: 0,
+          },
+          attributes: [[model.fn('COUNT', model.col('*')), 'total']],
+        }),
+      ]);
+
+      let result = list.map((r) => r.dataValues);
+      const authors = await this.getAuthorInfo(result.map((r) => r.author_id));
+
+      const postIds = result.map((r) => r.id)
+      const userPostRelation = await this.getUserPostRelation(userId, postIds);
+      const photo = await this.getPhotoByPost(postIds);
+
+      // 组装数据
+      result = result.map((post) => {
+        for (const val of authors) {
+          if (val.id === post.author_id) {
+            post.author = val;
+          }
+        }
+
+        post.photo = [];
+        for (const val of photo) {
+          if (val.post_id === post.id) {
+            post.photo.push(val);
+          }
+        }
+
+        post.like = false;
+        post.collection = false;
+        for (const val of userPostRelation) {
+          if (val.post_id === post.id) {
+            post.like = val.like === 1;
+            post.collection = val.collection === 1;
+          }
+        }
+        return post;
+      });
+
+      return {
+        limit,
+        page,
+        total: total.total,
+        list: result,
+      };
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  private async getAuthorInfo(author: number[]) {
+    const { model } = this.ctx.app;
+
+    try {
+      const record = await model.User.findAll({
+        where: {
+          id: author,
+        },
+        attributes: {
+          exclude: ['password', 'created_at', 'updated_at']
+        },
+      });
+
+      return record.map((a) => a.dataValues);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  private async getUserPostRelation(userId: number, postId: number[]) {
+    const { model } = this.ctx.app;
+
+    try {
+      const record = await model.UserPostRelation.findAll({
+        where: {
+          user_id: userId,
+          post_id: postId,
+        },
+      });
+
+      return record.map((r) => r.dataValues);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  private async getPhotoByPost(postId: number[]) {
+    const { model } = this.ctx.app;
+    try {
+      const record = await model.Photo.findAll({
+        where: {
+          post_id: postId,
+        },
+      });
+
+      return record.map((r) => r.dataValues);
+    } catch (err) {
+      throw err;
+    }
+  }
+    // private async getListByPostId(postId: number[]) {
+  //   const { model } = this.ctx.app;
+
+  //   try {
+  //     const record = await model.Post.findAll({
+  //       where: {
+  //         id: postId,
+  //         status: 0,
+  //       },
+  //     });
+
+  //     const result = record.map((r) => r.dataValues);
+  //     const authors = await this.getAuthorInfo(result.map((r) => r.author_id));
+
+  //     return [result, authors];
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // }
 }

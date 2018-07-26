@@ -20,7 +20,7 @@ export default class Images extends Controller {
 
     try {
       const result = await ctx.service.oss.upload(stream, `person/${ctx.userInfo.id}/${type}`);
-      await ctx.service.images.create({
+      const record = await ctx.service.images.create({
         userId: ctx.userInfo.id,
         type,
         src: result.src,
@@ -29,6 +29,10 @@ export default class Images extends Controller {
       ctx.body = {
         error_code: 0,
         message: '',
+        data: {
+          src: record.src,
+          id: type === 'photo' ? record.id : null,
+        },
       };
     } catch (err) {
       throw err;

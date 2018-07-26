@@ -11,7 +11,7 @@ export default class Images extends Service {
   public async create(params: UploadImage) {
     if (params.type === 'avatar') {
       try {
-        await this.app.model.User.update(
+        const record = await this.app.model.User.update(
           {
             avatar: params.src,
           },
@@ -21,6 +21,9 @@ export default class Images extends Service {
             },
           },
         );
+        return {
+          src: record.src,
+        };
       } catch (err) {
         throw err;
       }
@@ -28,7 +31,7 @@ export default class Images extends Service {
 
     if (params.type === 'cover') {
       try {
-        await this.app.model.User.update(
+        const record = await this.app.model.User.update(
           {
             cover: params.src,
           },
@@ -38,6 +41,9 @@ export default class Images extends Service {
             },
           },
         );
+        return {
+          src: record.src,
+        };
       } catch (err) {
         throw err;
       }
@@ -45,17 +51,23 @@ export default class Images extends Service {
 
     if (params.type === 'photo') {
       try {
-        await this.app.model.Photo.create(
+        const record = await this.app.model.Photo.create(
           {
             user_id: params.userId,
             filename: params.filename,
             src: params.src,
           },
         );
+        return {
+          id: record.id,
+          src: record.src,
+        };
       } catch (err) {
         throw err;
       }
     }
+
+    throw new Error('类型不存在');
   }
 
   public async delete(id, userId?: number) {

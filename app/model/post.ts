@@ -37,7 +37,7 @@ export default (app: Application) => {
     status: {
       type: INTEGER.UNSIGNED,
       defaultValue: 0,
-      comment: '帖子状态: 0 正常, 1 删除',
+      comment: '帖子状态: 0 正常, 1 存草稿',
     },
     created_at: {
       type: DATE,
