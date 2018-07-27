@@ -16,15 +16,7 @@ export default class Post extends Controller {
 
     let result;
     try {
-      result = await ctx.service.post.newIndex(userInfo.id, nPage, nLimit);
-      // ctx.body = {
-      //   error_code: 0,
-      //   message: '',
-      //   data: result.postList,
-      //   page: result.page,
-      //   limit: result.limit,
-      //   total: result.total,
-      // };
+      result = await ctx.service.post.index(userInfo.id, nPage, nLimit);
       ctx.body = result;
     } catch (err) {
       throw err;
