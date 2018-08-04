@@ -29,6 +29,7 @@ export default class Post extends Controller {
     const {
       reference,
       content,
+      type,
     } = ctx.request.body;
 
     let { photo } = ctx.request.body;
@@ -50,6 +51,7 @@ export default class Post extends Controller {
         userInfo.id,
         content,
         reference,
+        type,
         photo,
       );
     } catch (err) {

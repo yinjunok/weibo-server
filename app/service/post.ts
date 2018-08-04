@@ -18,6 +18,7 @@ export default class Post extends Service {
     const posts = await this.getPostByUser([...followingIds, userId], page, limit, userId);
 
     let referenceIds = posts.list.map((p) => p.reference_post_id);
+    // 去掉重复的 ID
     referenceIds = referenceIds.reduce((result, cur) => {
       if (result.indexOf(cur) === -1) {
         result.push(cur);
@@ -28,8 +29,8 @@ export default class Post extends Service {
     const referencePost = await this.getListByPostId(referenceIds);
     // 组装数据
     posts.list = posts.list.map((p) => {
+      p.reference = null;
       for (const v of referencePost) {
-        p.reference = null;
         if (v.id === p.reference_post_id) {
           p.reference = v;
         }
@@ -43,17 +44,35 @@ export default class Post extends Service {
     user: string,
     content: string,
     reference: string | undefined,
+    type: 'post' | 'draft',
     photo: string[] | undefined,
   ) {
     const { app } = this.ctx;
 
     let newPost;
     try {
-      newPost = await app.model.Post.create({
-        content,
-        author_id: user,
-        reference_post_id: reference ? reference : null,
-      });
+      if (reference) {
+        let referencePost;
+        [newPost, referencePost] = await Promise.all([
+          app.model.Post.create({
+            content,
+            author_id: user,
+            reference_post_id: reference,
+            status: type === 'post' ? 0 : 1,
+          }),
+          app.model.Post.findById(reference),
+        ]);
+
+        referencePost.update({
+          reference_amount: referencePost.reference_amount + 1,
+        });
+      } else {
+        newPost = await app.model.Post.create({
+          content,
+          author_id: user,
+          status: type === 'post' ? 0 : 1,
+        });
+      }
     } catch (err) {
       throw err;
     }
@@ -168,7 +187,7 @@ export default class Post extends Service {
       return {
         limit,
         page,
-        total: total.total,
+        total: total[0].dataValues.total,
         list: result,
       };
     } catch (err) {
